@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>青龙变量上传</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  .container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 600px;
+  }
+  .notice {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  .form-group label {
+    margin-bottom: 5px;
+  }
+  .form-group input,
+  .form-group select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  .form-group button {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .form-group button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="notice">
+    <p>公告：xxxxx</p>
+  </div>
+  <form id="variableForm">
+    <div class="form-group">
+      <label for="variable_name">变量名</label>
+      <select id="variable_name" name="name">
+        <option value="refreshToken">阿里云网盘</option>
+        <option value="chinaTelecomAccount">电信签到</option>
+        <option value="ysfqd_data">云闪付签到</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="variable_value">变量值</label>
+      <input type="text" id="variable_value" name="value" required>
+    </div>
+    <div class="form-group">
+      <label for="remarks">备注</label>
+      <input type="text" id="remarks" name="remarks">
+    </div>
+    <div class="form-group">
+      <button type="button" id="submitBtn">提交</button>
+    </div>
+  </form>
+  
+  <!-- 添加用于显示返回的 JSON 数据的 <div> 元素 -->
+  <div id="responseContainer"></div>
+</div>
+
+<script>
+  document.getElementById('submitBtn').addEventListener('click', function() {
+    // 获取表单元素和值
+    var variableName = document.getElementById('variable_name').value;
+    var variableValue = document.getElementById('variable_value').value;
+    var remarks = document.getElementById('remarks').value;
+
+    // 构建 URL
+    var apiUrl = '/api.php?' + 'name=' + encodeURIComponent(variableName) + '&value=' + encodeURIComponent(variableValue) + '&remarks=' + encodeURIComponent(remarks);
+
+    // 发送 GET 请求
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        // 将返回的 JSON 数据显示在页面上
+        document.getElementById('responseContainer').innerText = JSON.stringify(data);
+      })
+      .catch(error => console.error('请求失败：', error));
+  });
+</script>
+
+</body>
+</html>
